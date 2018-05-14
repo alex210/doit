@@ -1,0 +1,13 @@
+.btn{
+	margin-right: 15px;
+	margin-bottom: 20px;
+}
+
+.btn:focus{
+	outline: none;
+	box-shadow: none;
+}
+
+#map{
+	height: 400px;
+}

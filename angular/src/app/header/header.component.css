@@ -1,0 +1,20 @@
+header{
+	background-color: rgba(56,121,217, .25);
+	margin-bottom: 25px;
+}
+
+nav{
+	background: none!important;
+}
+
+.navbar{
+	padding: .5em 0;
+}
+
+.nav-item:hover{
+	text-decoration: underline;
+}
+
+.nav-item.active{
+	text-decoration: underline;
+}
