@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AutorizationService } from './authorization.service';
-// import { User } from '../user';
+import { User } from '../user';
 
 @Component({
   selector: 'app-authorization',
@@ -8,26 +8,35 @@ import { AutorizationService } from './authorization.service';
   styleUrls: ['./authorization.component.css'],
   providers: [AutorizationService]
 })
-export class AuthorizationComponent {
-	user = {
-		login: '',
-		password: ''
-	}
-	// user: User = new User();
+export class AuthorizationComponent implements OnInit {
+  isAuthenticated = false;
+	user: User = new User();
 
   constructor(private autorizationService: AutorizationService) {}
 
   sign(){
-  	this.autorizationService.getAutorization(JSON.stringify(this.user))
+  	this.autorizationService.getAutorization(this.user)
   		.subscribe((data) => {
-	  			console.log(data);
-	  		},
-	  		error => console.log(error)
+        if(data){
+	  			this.isAuthenticated = true;
+        } else {
+          
+        }
+	  	},
+	  	error => console.log(error)
   		)
   }
 
-
-  // ngOnInit() {
-  // }
+  ngOnInit() {
+  //   this.autorizationService.getAutorization()
+  //     .subscribe((data) => {
+  //         console.log(data);
+  //       if(!data){
+  //         // this.user.login = data;
+  //         // this.user.password = data;
+  //       }
+  //       error => console.log(error)
+  //   });
+  }
 
 }

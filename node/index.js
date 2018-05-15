@@ -1,41 +1,74 @@
-// const http = require('http')
-// const auth = require('basic-auth')
+const auth = require('basic-auth')
  
-// // Create server
-// const server = http.createServer(function (req, res) {
-//   const credentials = auth(req)
- 
-//   if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
-//     res.statusCode = 401
-//     res.setHeader('WWW-Authenticate', 'Basic realm="example"')
-//     res.end('Access denied')
-//   } else {
-//     res.end('Access granted')
-//   }
-// })
- 
-// // Listen
-// server.listen(3000)
+  // if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
+  //   res.statusCode = 401;
+  //   res.setHeader('WWW-Authenticate', 'Basic realm="example"');
+  //   res.end('Access denied');
+  // } else {
+  //   res.end('Access granted');
+  // }
 
 
 
-const mongoose = require("mongoose");
-
-mongoose.connect('mongodb://localhost/users')
-	.then(() => console.log('MongoDB has started ...'))
-	.catch(e => console.log(e))
 
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
+const bd = require("./bd/bd");
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(cors());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
+// app.post('/auth', function(request, response){
+// 	bd.makeUser(request.body.login, request.body.password);
+// 	response.send(request.body);
+// });
+
+app.post('/auth', function(request, response){
+  const credentials = auth(request);
+  if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
+  	bd.makeUser(request.body.name, request.body.login, request.body.password);
+		response.send(true);
+	} else {
+		response.send(false);
+  }
+});
+
+app.post('/check', function(request, response){
+  const credentials = auth(request);
+  if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
+		response.send(false);
+	} else {
+		let data = {
+			login: credentials.name,
+			password: credentials.pass,
+		}
+		response.send(JSON.stringify(data));
+  }
+});
 
 app.listen(3000);
-app.post('/auth', function(request, response){
-	console.log(request.body);
-	response.send("<h2>Привет Express!</h2>")
-})
 
+
+/*const http = require('http')
+const auth = require('basic-auth')
+ 
+// Create server
+const server = http.createServer(function (req, res) {
+  const credentials = auth(req)
+ 
+  if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
+    res.statusCode = 401
+    res.setHeader('WWW-Authenticate', 'Basic realm="example"')
+    res.end('Access denied')
+  } else {
+    res.end('Access granted')
+  }
+})
+ 
+// Listen
+server.listen(3000)*/

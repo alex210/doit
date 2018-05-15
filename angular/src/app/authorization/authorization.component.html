@@ -1,7 +1,13 @@
-<form>
+<form *ngIf="!isAuthenticated; else isLoged">
+	<label for="name">Name:</label>
+	<input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required>
 	<label for="login">Login:</label>
 	<input type="text" class="form-control" id="login" [(ngModel)]="user.login" name="login" required>
 	<label for="password">Password:</label>
 	<input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password" required>
 	<button class="btn btn-primary" (click)="sign()">Sign in</button>
 </form>
+
+<ng-template #isLoged>
+<p>Hello, {{user.name}}! You are already registered.</p>
+</ng-template>
