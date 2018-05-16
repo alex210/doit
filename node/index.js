@@ -28,27 +28,40 @@ app.use(bodyParser.json());
 // 	response.send(request.body);
 // });
 
+
+
 app.post('/auth', function(request, response){
   const credentials = auth(request);
-  if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
-  	bd.makeUser(request.body.name, request.body.login, request.body.password);
-		response.send(true);
-	} else {
-		response.send(false);
-  }
+	bd.findUser(credentials.name, credentials.pass).then(res => {
+	  if (!credentials || !res) {
+	  	bd.makeUser(request.body.name, request.body.login, request.body.password);
+			response.send(true);
+		} else {
+			response.send(false);
+	  }
+	});
 });
 
 app.post('/check', function(request, response){
   const credentials = auth(request);
-  if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
-		response.send(false);
-	} else {
-		let data = {
-			login: credentials.name,
-			password: credentials.pass,
-		}
-		response.send(JSON.stringify(data));
-  }
+	bd.findUser(credentials.name, credentials.pass).then(res => {
+	  if (!credentials || !res) {
+			response.send(false);
+		} else {
+			response.send(true);
+	  }
+	});
+});
+
+app.post('/signin', function(request, response){
+  const credentials = auth(request);
+	bd.signUser(credentials.name, credentials.pass).then(res => {
+	  if (!credentials || !res) {
+			response.send(false);
+		} else {
+			response.send({"name":res});
+	  }
+	});
 });
 
 app.listen(3000);

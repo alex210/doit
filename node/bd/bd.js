@@ -23,4 +23,30 @@ function makeUser(name, login, password){
 		.catch(e => console.log(e));
 }
 
+function findUser(login, password){
+	return new Promise(function(resolve){
+		ModelUser.find({login: login, password: password}).then(user => {
+			if(user.length > 0){
+				resolve(true);
+			}else{
+				resolve(false);
+			};
+		});
+	});
+}
+
+function signUser(login, password){
+	return new Promise(function(resolve){
+		ModelUser.find({login: login, password: password}).then(user => {
+			if(user.length > 0){
+				resolve(user[0].name);
+			}else{
+				resolve(false);
+			};
+		});
+	});
+}
+
 exports.makeUser = makeUser;
+exports.findUser = findUser;
+exports.signUser = signUser;
