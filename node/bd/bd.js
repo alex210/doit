@@ -47,6 +47,29 @@ function signUser(login, password){
 	});
 }
 
+function addMarkers(login, password, markers){
+	return new Promise(function(resolve){
+		ModelUser.update({login: login, password: password}, {markers: markers}).then(result => {
+			resolve(result);
+		});
+	});
+}
+
+function getMarker(login, password){
+	return new Promise(function(resolve){
+		ModelUser.find({login: login, password: password}).then(user => {
+			if(user.length > 0){
+				resolve(user[0].markers);
+			}else{
+				resolve(false);
+			};
+		});
+	});
+}
+
+
 exports.makeUser = makeUser;
 exports.findUser = findUser;
 exports.signUser = signUser;
+exports.addMarkers = addMarkers;
+exports.getMarker = getMarker;

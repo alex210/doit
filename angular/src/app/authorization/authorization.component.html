@@ -1,30 +1,30 @@
 <div class="row" *ngIf="!isAuthenticated; else isLoged">
 	<div class="col-md-6">
-	<form>
-		<label for="name">Name:</label>
-		<input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required>
-		<label for="login">Login:</label>
-		<input type="text" class="form-control" id="login" [(ngModel)]="user.login" name="login" required>
-		<label for="password">Password:</label>
-		<input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password" required>
-		<button class="btn btn-primary" (click)="signUp()">Sign up</button>
-	</form>
-	<p *ngIf="isRegistredUser">You are already registered!</p>
+		<form (ngSubmit)="signUp(formSignUp)" #formSignUp="ngForm">
+			<label>Name:</label>
+			<input type="text" class="form-control" ngModel name="name" required>
+			<label>Login:</label>
+			<input type="text" class="form-control" ngModel name="login" required>
+			<label>Password:</label>
+			<input type="password" class="form-control" ngModel name="password" required>
+			<button class="btn btn-primary" type="submit" [disabled]="!formSignUp.valid">Sign up</button>
+		</form>
+		<p *ngIf="isRegistredUser">You are already registered!</p>
 	</div>
 
 	<div class="col-md-6">
-	<form>
-		<label for="login">Login:</label>
-		<input type="text" class="form-control" id="loginIn" [(ngModel)]="userin.login" name="loginIn" required>
-		<label for="password">Password:</label>
-		<input type="password" class="form-control" id="passwordIn" [(ngModel)]="userin.password" name="passwordIn" required>
-		<button class="btn btn-primary" (click)="signIn()">Sign in</button>
-	</form>
-	<p *ngIf="wrong;">Wrong login or password</p>
+		<form (ngSubmit)="signIn(formSignIn)" #formSignIn="ngForm">
+			<label>Login:</label>
+			<input type="text" class="form-control" ngModel name="login" required>
+			<label>Password:</label>
+			<input type="password" class="form-control" ngModel name="password" required>
+			<button class="btn btn-primary" type="submit" [disabled]="!formSignIn.valid">Sign in</button>
+		</form>
+		<p *ngIf="wrong;">Wrong login or password</p>
 	</div>
 </div>
 
 <ng-template #isLoged>
 <p>Hello, {{user.name}}! You are already registered.</p>
-<button>Sign out</button>
+<button class="btn btn-warning" (click)="signOut()">Sign out</button>
 </ng-template>
